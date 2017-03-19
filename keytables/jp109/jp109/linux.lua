@@ -86,7 +86,7 @@ return {
     ["NonConvert"] = Key.MUHENKAN,
     ["Space"] = Key.SPACE,
     ["Convert"] = Key.HENKAN,
-    ["KatakanaHiragana"] = Key.KATAKAKAHIRAGANA,
+    ["KatakanaHiragana"] = Key.KATAKANAHIRAGANA,
     ["ContextMenu"] = Key.COMPOSE,
 
     ["PrintScreen"] = Key.SYSRQ,
@@ -143,7 +143,7 @@ return {
   },
   NON_ALPHANUMERIC_KEYS = {
     Key.ESC, Key.F1, Key.F2, Key.F3, Key.F4, Key.F5, Key.F6, Key.F7, Key.F8, Key.F9, Key.F10, Key.F11, Key.F12, Key.F13, Key.F14, Key.F15, Key.F16, Key.F17, Key.F18, Key.F19, Key.F20, Key.F21, Key.F22, Key.F23, Key.F24,
-    Key.GRAVE, Key.BACKSPACE, Key.TAB, Key.ENTER, Key.CAPSLOCK, Key.MUHENKAN, Key.SPACE, Key.HENKAN, Key.KATAKAKAHIRAGANA, Key.COMPOSE,
+    Key.GRAVE, Key.BACKSPACE, Key.TAB, Key.ENTER, Key.CAPSLOCK, Key.MUHENKAN, Key.SPACE, Key.HENKAN, Key.KATAKANAHIRAGANA, Key.COMPOSE,
     Key.SYSRQ, Key.SCROLLLOCK, Key.PAUSE, Key.INSERT, Key.HOME, Key.PAGEUP, Key.DELETE, Key.END, Key.PAGEDOWN, Key.UP, Key.DOWN, Key.LEFT, Key.RIGHT,
     Key.NUMLOCK, Key.KP0, Key.KP1, Key.KP2, Key.KP3, Key.KP4, Key.KP5, Key.KP6, Key.KP7, Key.KP8, Key.KP9, Key.KPDOT, Key.KPPLUS, Key.KPMINUS, Key.KPASTERISK, Key.KPSLASH, Key.KPENTER,
   },

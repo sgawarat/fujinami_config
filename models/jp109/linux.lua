@@ -188,7 +188,7 @@ return {
     ["全角/半角"] = {{Key.GRAVE}},
     ["無変換"] = {{Key.MUHENKAN}},
     ["変換"] = {{Key.HENKAN}},
-    ["カタカナ/ひらがな"] = {{Key.KATAKAKAHIRAGANA}},
+    ["カタカナ/ひらがな"] = {{Key.KATAKANAHIRAGANA}},
 
     -- ひらがな
     ["あ"] = {{Key.A}},
