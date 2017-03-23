@@ -2,9 +2,6 @@ require("platform." .. Platform.NAME)
 
 local assert = require "lib.assert"
 
-local current_model = nil
-local current_keytable = nil
-
 local MODIFIER_KEYS = {
   Key.SHIFT_LEFT, Key.CONTROL_LEFT, Key.ALT_LEFT, Key.OS_LEFT,
   Key.SHIFT_RIGHT, Key.CONTROL_RIGHT, Key.ALT_RIGHT, Key.OS_RIGHT,
@@ -307,37 +304,46 @@ end
 
 --------------------------------------------------------------------------------
 
+-- 状態
+local current_model = nil
+local current_keytable = nil
+
 function global_option(t)
   assert.type("table", t)
   fujinami.set_global_option(t)
 end
 
 function model(model_or_model_name)
-  if type(model_or_model_name) == "string" then
-    current_model = require("models." .. model_or_model_name)
-  elseif type(model_or_model_name) == "table" then
-    current_model = model_or_model_name
-  else
-    assert.fail("type(%s) is neither string nor table", model_or_model_name)
-  end
+  assert.types({"string", "table"}, model_or_model_name)
+  current_model = model_or_model_name
 end
 
 function keytable(keytable_or_keytable_name)
-  if type(keytable_or_keytable_name) == "string" then
-    current_keytable = require("keytables." .. current_model.name .. "." .. keytable_or_keytable_name)
-  elseif type(keytable_or_keytable_name) == "table" then
-    current_keytable = keytable_or_keytable_name
-  else
-    assert.fail("type(%s) is neither string nor table", keytable_or_keytable_name)
-  end
+  assert.types({"string", "table"}, keytable_or_keytable_name)
+  current_keytable = keytable_or_keytable_name
 end
 
 function layout(layout_or_layout_name)
   assert.ne(nil, current_keytable)
   assert.ne(nil, current_model)
+
+  if type(current_model) == "string" then
+    current_model = wrequire("models." .. current_model)
+  end
+  if type(current_model) ~= "table" then
+    assert.fail("current model is not valid (model:%s)", current_model)
+  end
+
+  if type(current_keytable) == "string" then
+    current_keytable = wrequire("keytables." .. current_model.name .. "." .. current_keytable)
+  end
+  if type(current_keytable) ~= "table" then
+    assert.fail("current keytable is not valid (keytable:%s)", current_keytable)
+  end
+
   if type(layout_or_layout_name) == "string" then
     local layout_id = current_keytable.name .. "." .. layout_or_layout_name
-    local layout = require("layouts." .. layout_id)
+    local layout = wrequire("layouts." .. layout_id)
     local handle = fujinami.get_layout_handle(layout_id)
     local model = current_model
     local keytable = current_keytable
