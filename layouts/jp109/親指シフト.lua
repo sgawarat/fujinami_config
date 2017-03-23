@@ -2,7 +2,7 @@ local assert = require "lib.assert"
 local layout = require "lib.layout"
 
 return layout.new {
-  name = "ThumbShift",
+  name = "親指シフト",
   build = function (model, keytable, options)
     local K = model:map_to_key()
     local C = model:map_to_char()
