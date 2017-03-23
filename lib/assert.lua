@@ -1,92 +1,90 @@
 local inspect = require "lib.inspect"
 
-local function to_string(args)
-  local results = {}
+local function format(msg, ...)
+  local args = table.pack(...)
+  local arg_strs = {}
   for i = 1, args.n do
-    table.insert(results, inspect(args[i]))
+    table.insert(arg_strs, inspect(args[i]))
   end
-  return table.unpack(results)
+  return string.format(msg, table.unpack(arg_strs))
 end
 
-local function assert_impl(expr, s, ...)
-  if expr then
-    return function (...)
-    end
-  else
-    local s_args = table.pack(...)
-    return function (ss, ...)
-      if ss then
-        local ss_args = table.pack(...)
-        error(debug.traceback(string.format(ss, to_string(ss_args))))
-      else
-        error(debug.traceback(string.format(s, to_string(s_args))))
-      end
-    end
+local function fail(msg, ...)
+  error(debug.traceback(format(msg, ...)))
+end
+
+local function assert(expr, msg, ...)
+  if not expr then
+    fail(msg, ...)
   end
 end
 
-----------
+--------------------------------------------------------------------------------
 
 local module = {}
 
-function module.fail(s, ...)
-  return assert_impl(false, "assertion failed")(s, ...)
+function module.fail(msg, ...)
+  fail("assertion failed")
 end
 
 function module.assert(expr)
-  return assert_impl(expr, "assertion failed")
+  assert(expr, "assertion failed")
 end
 
 function module.eq(expected, actual)
-  return assert_impl(expected == actual,
-                     "assertion failed: %s == %s",
-                     expected, actual)
+  assert(expected == actual,
+         "assertion failed: %s == %s",
+         expected, actual)
 end
 
 function module.ne(expected, actual)
-  return assert_impl(expected ~= actual,
-                     "assertion failed: %s ~= %s",
-                     expected, actual)
+  assert(expected ~= actual,
+         "assertion failed: %s ~= %s",
+         expected, actual)
 end
 
-function module.type(expected_type, actual, ...)
-  return assert_impl(expected_type == type(actual),
-                     "assertion failed: %s == type(%s)",
-                     expected_type, actual)
+function module.type(expected_type, actual_value, ...)
+  assert(expected_type == type(actual_value),
+         "assertion failed: %s == type(%s)",
+         expected_type, actual_value)
 end
 
-function module.table_eq(expected, actual_table, actual_key, ...)
-  return assert_impl(expected == actual_table[actual_key],
-                     "assertion failed: %s == %s (table:%s, key:%s)",
-                     expected, actual_table[actual_key],
-                     actual_table,
-                     actual_key)
+function module.types(expected_types, actual_value)
+  local actual_type = type(actual_value)
+  for _, expected_type in pairs(expected_types) do
+    if expected_type == actual_type then
+      return
+    end
+  end
+  fail("assertion failed: %s == type(%s)",
+       expected_types, actual_value)
 end
 
-function module.table_ne(expected, actual_table, actual_key, ...)
-  return assert_impl(expected ~= actual_table[actual_key],
-                     "assertion failed: %s ~= %s (table:%s, key:%s)",
-                     expected,
-                     actual_table[actual_key],
-                     actual_table,
-                     actual_key)
+function module.table_eq(expected_value, actual_table, actual_key, ...)
+  assert(expected_value == actual_table[actual_key],
+         "assertion failed: %s == %s (table:%s, key:%s)",
+         expected_value,
+         actual_table[actual_key],
+         actual_table,
+         actual_key)
+end
+
+function module.table_ne(expected_value, actual_table, actual_key, ...)
+  assert(expected_value ~= actual_table[actual_key],
+         "assertion failed: %s ~= %s (table:%s, key:%s)",
+         expected_value,
+         actual_table[actual_key],
+         actual_table,
+         actual_key)
 end
 
 function module.table_type(expected_type, actual_table, actual_key)
-  return assert_impl(expected_type == type(actual_table[actual_key]),
-                     "assertion failed: %s == type(%s) (table:%s, key:%s)",
-                     expected_type,
-                     actual_table[actual_key],
-                     actual_table,
-                     actual_key)
-end
-
-function module.table_types(expected_types, actual_table)
-  return function (...)
-    for arg_name, type_name in pairs(expected_types) do
-      module.table_type(type_name, actual_table, arg_name)(...)
-    end
-  end
+  assert(expected_type == type(actual_table[actual_key]),
+         "assertion failed: %s == type(%s) (table:%s, key:%s)",
+         expected_type,
+         actual_table[actual_key],
+         actual_table,
+         actual_key)
 end
 
 local module_mt = {

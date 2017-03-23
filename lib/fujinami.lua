@@ -35,9 +35,9 @@ local MODIFIER_BOTH_MASKS = {
 -- extra_mods: 生成処理が必要とする修飾キー
 -- swap_sides: 必要とする修飾キーに与える方向
 local function modify_command(base_command, extra_mods, swap_sides)
-  assert.type("table", base_command)()
-  assert.type("number", extra_mods)()
-  assert.type("number", swap_sides)()
+  assert.type("table", base_command)
+  assert.type("number", extra_mods)
+  assert.type("number", swap_sides)
 
   local command = {}
   for _, action in pairs(base_command) do
@@ -66,11 +66,11 @@ local function modify_command(base_command, extra_mods, swap_sides)
 end
 
 local function create_mappings(handle, keys, commands, shift_commands, extra_mods)
-  assert.type("table", keys)()
-  assert.type("table", commands)()
-  assert.type("table", shift_commands)()
-  assert.eq(#keys, #commands)()
-  assert.eq(#keys, #shift_commands)()
+  assert.type("table", keys)
+  assert.type("table", commands)
+  assert.type("table", shift_commands)
+  assert.eq(#keys, #commands)
+  assert.eq(#keys, #shift_commands)
 
   for i = 1, #keys do
     assert.table_ne(nil, keys, i)
@@ -102,11 +102,11 @@ local function create_mappings(handle, keys, commands, shift_commands, extra_mod
 end
 
 local function create_cao_mappings(handle, keys, commands, shift_commands, extra_mods)
-  assert.type("table", keys)()
-  assert.type("table", commands)()
-  assert.type("table", shift_commands)()
-  assert.eq(#keys, #commands)()
-  assert.eq(#keys, #shift_commands)()
+  assert.type("table", keys)
+  assert.type("table", commands)
+  assert.type("table", shift_commands)
+  assert.eq(#keys, #commands)
+  assert.eq(#keys, #shift_commands)
 
   for cao_mods = 1, (1 << #CAO_MODIFIER_MASKS) - 1 do
     local active_keys = {}
@@ -119,7 +119,7 @@ local function create_cao_mappings(handle, keys, commands, shift_commands, extra
     end
 
     for i = 1, #keys do
-      assert.table_ne(nil, keys, i)()
+      assert.table_ne(nil, keys, i)
 
       -- default
       table.insert(active_keys, {keys[i], KeyRole.TRIGGER})
@@ -164,21 +164,21 @@ end
 
 -- フローを定義する
 function flow(t)
-  assert.type("table", t)()
-  assert.type("number", t.key)()
-  assert.type("number", t.flow_type)()
+  assert.type("table", t)
+  assert.type("number", t.key)
+  assert.type("number", t.flow_type)
   fujinami.create_flow(handle, key, flow_type)
 end
 
 -- 単独押しキーを定義する
 function immediate_key_flows(t)
-  assert.type("table", t)()
-  assert.type("table", t.key_lists)()
+  assert.type("table", t)
+  assert.type("table", t.key_lists)
   return function (handle)
     for _, keys in pairs(t.key_lists) do
-      assert.type("table", keys)()
+      assert.type("table", keys)
       for _, key in pairs(keys) do
-        assert.type("number", key)()
+        assert.type("number", key)
         fujinami.create_flow(handle, key, FlowType.IMMEDIATE)
       end
     end
@@ -187,13 +187,13 @@ end
 
 -- 同時押しキーを定義する
 function deferred_key_flows(t)
-  assert.type("table", t)()
-  assert.type("table", t.key_lists)()
+  assert.type("table", t)
+  assert.type("table", t.key_lists)
   return function (handle)
     for _, keys in pairs(t.key_lists) do
-      assert.type("table", keys)()
+      assert.type("table", keys)
       for _, key in pairs(keys) do
-        assert.type("number", key)()
+        assert.type("number", key)
         fujinami.create_flow(handle, key, FlowType.DEFERRED)
       end
     end
@@ -204,10 +204,10 @@ end
 
 -- マッピングを定義する
 function mapping(t)
-  assert.type("table", t)()
-  assert.type("table", t.active_keys)()
-  assert.type("table", t.commands)()
-  assert.eq(#t.keys, #t.commands)()
+  assert.type("table", t)
+  assert.type("table", t.active_keys)
+  assert.type("table", t.commands)
+  assert.eq(#t.keys, #t.commands)
 
   return function (handle)
     for i = 1, #t.active_keys do
@@ -218,9 +218,9 @@ end
 
 -- 単純な記述でマッピングを定義する
 function simple_mappings(t)
-  assert.type("table", t)()
-  assert.type("table", t.keys)()
-  assert.type("table", t.commands)()
+  assert.type("table", t)
+  assert.type("table", t.keys)
+  assert.type("table", t.commands)
 
   return function (handle)
     local shift_commands = t.shift_commands or t.commands
@@ -236,8 +236,8 @@ end
 
 -- キーをそのままにコマンドとしたマッピングを定義する
 function passthrough_mappings(t)
-  assert.type("table", t)()
-  assert.type("table", t.keys)()
+  assert.type("table", t)
+  assert.type("table", t.keys)
 
   return function (handle)
     for mods = 0, Mod.ALL do
@@ -250,7 +250,7 @@ function passthrough_mappings(t)
       end
 
       for i = 1, #t.keys do
-        assert.table_ne(nil, t.keys, i)()
+        assert.table_ne(nil, t.keys, i)
 
         table.insert(active_keys, {t.keys[i], KeyRole.TRIGGER})
         fujinami.create_mapping(handle, active_keys, {{t.keys[i], mods}})
@@ -262,11 +262,11 @@ end
 
 -- 任意の修飾キーを指定するマッピングを定義する
 function extended_mappings(t)
-  assert.type("table", t)()
-  assert.type("table", t.keys)()
-  assert.type("table", t.shift_keys)()
-  assert.type("table", t.commands)()
-  assert.eq(#t.keys, #t.commands)()
+  assert.type("table", t)
+  assert.type("table", t.keys)
+  assert.type("table", t.shift_keys)
+  assert.type("table", t.commands)
+  assert.eq(#t.keys, #t.commands)
 
   return function (handle)
     local active_keys = t.shift_keys
@@ -297,9 +297,9 @@ end
 --------------------------------------------------------------------------------
 
 function next_layout(t)
-  assert.type("table", t)()
-  assert.type("table", t.keys)()
-  assert.type("string", t.name)()
+  assert.type("table", t)
+  assert.type("table", t.keys)
+  assert.type("string", t.name)
   return function (handle)
     fujinami.create_next_layout(handle, t.keys, t.name)
   end
@@ -308,7 +308,7 @@ end
 --------------------------------------------------------------------------------
 
 function global_option(t)
-  assert.type("table", t)()
+  assert.type("table", t)
   fujinami.set_global_option(t)
 end
 
@@ -333,8 +333,8 @@ function keytable(keytable_or_keytable_name)
 end
 
 function layout(layout_or_layout_name)
-  assert.ne(nil, current_keytable)()
-  assert.ne(nil, current_model)()
+  assert.ne(nil, current_keytable)
+  assert.ne(nil, current_model)
   if type(layout_or_layout_name) == "string" then
     local layout_id = current_keytable.name .. "." .. layout_or_layout_name
     local layout = require("layouts." .. layout_id)

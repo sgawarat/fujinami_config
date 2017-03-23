@@ -1,8 +1,8 @@
 local assert = require "lib.assert"
 
 local function find_key(key_map, name)
-  assert.type("table", key_map)()
-  assert.type("string", name)()
+  assert.type("table", key_map)
+  assert.type("string", name)
   if name == "" then
     return 0
   else
@@ -11,8 +11,8 @@ local function find_key(key_map, name)
 end
 
 local function find_keys(key_map, names)
-  assert.type("table", key_map)()
-  assert.type("table", names)()
+  assert.type("table", key_map)
+  assert.type("table", names)
   local keys = {}
   for _, name in pairs(names) do
     table.insert(keys, find_key(key_map, name))
@@ -64,10 +64,10 @@ local module_mt = {
 }
 
 function module.new(t)
-  assert.type("table", t)()
-  assert.type("string", t.name)()
-  assert.type("string", t.model_name)()
-  assert.type("table", t.key_map)()
+  assert.type("table", t)
+  assert.type("string", t.name)
+  assert.type("string", t.model_name)
+  assert.type("table", t.key_map)
   return setmetatable(t, impl_mt)
 end
 

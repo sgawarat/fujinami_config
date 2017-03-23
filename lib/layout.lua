@@ -30,7 +30,7 @@ local module_mt = {
 }
 
 function module.new(t)
-  assert.type("string", t.name)()
+  assert.type("string", t.name)
   return setmetatable(t, impl_mt)
 end
 

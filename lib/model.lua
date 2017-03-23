@@ -7,8 +7,8 @@ local assert = require "lib.assert"
 -- Command = {AnyAction, ...}
 
 local function map_to_key(actions_map, command)
-  assert.type("table", actions_map)()
-  assert.type("table", command)()
+  assert.type("table", actions_map)
+  assert.type("table", command)
   local result = {}
   for _, any_action in pairs(command) do
     if type(any_action) == "string" then
@@ -16,7 +16,7 @@ local function map_to_key(actions_map, command)
         table.insert(result, {})
       else
         -- any_actionがActionsNameなら、同名のKeyActionに変換する
-        assert.table_ne(nil, actions_map, any_action)()
+        assert.table_ne(nil, actions_map, any_action)
         local actions = actions_map[any_action]
         for _, action in pairs(actions) do
           table.insert(result, action or {})
@@ -33,8 +33,8 @@ local function map_to_key(actions_map, command)
 end
 
 local function map_to_char(actions_map, command)
-  assert.type("table", actions_map)()
-  assert.type("table", command)()
+  assert.type("table", actions_map)
+  assert.type("table", command)
   local result = {}
   for _, any_action in pairs(command) do
     if type(any_action) == "string" then
@@ -55,8 +55,8 @@ local function map_to_char(actions_map, command)
 end
 
 local function map_to_keys(actions_map, commands)
-  assert.type("table", actions_map)()
-  assert.type("table", commands)()
+  assert.type("table", actions_map)
+  assert.type("table", commands)
   local result = {}
   for _, command in pairs(commands) do
     table.insert(result, map_to_key(actions_map, command))
@@ -65,8 +65,8 @@ local function map_to_keys(actions_map, commands)
 end
 
 local function map_to_chars(actions_map, commands)
-  assert.type("table", actions_map)()
-  assert.type("table", commands)()
+  assert.type("table", actions_map)
+  assert.type("table", commands)
   local result = {}
   for _, command in pairs(commands) do
     table.insert(result, map_to_char(actions_map, command))
@@ -137,8 +137,8 @@ local module_mt = {
 }
 
 function module.new(t)
-  assert.type("string", t.name)()
-  assert.type("table", t.actions_map)()
+  assert.type("string", t.name)
+  assert.type("table", t.actions_map)
   return setmetatable(t, impl_mt)
 end
 
