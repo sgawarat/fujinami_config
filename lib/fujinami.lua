@@ -197,6 +197,21 @@ function deferred_key_flows(t)
   end
 end
 
+-- 同時押しキーを定義する
+function simul_key_flows(t)
+  assert.type("table", t)
+  assert.type("table", t.key_lists)
+  return function (handle)
+    for _, keys in pairs(t.key_lists) do
+      assert.type("table", keys)
+      for _, key in pairs(keys) do
+        assert.type("number", key)
+        fujinami.create_flow(handle, key, FlowType.SIMUL)
+      end
+    end
+  end
+end
+
 --------------------------------------------------------------------------------
 
 -- マッピングを定義する
