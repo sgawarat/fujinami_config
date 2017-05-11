@@ -79,11 +79,19 @@ end
 local impl = {}
 local impl_mt = {
   __index = impl,
-  __newindex = function ()
-    error("Attempt to modify read-only table")
-  end,
   __metatable = false,
 }
+
+function impl:apply(keytable)
+  self.alphanumeric_commands = {}
+  for _, key in pairs(keytable.alphanumeric_keys) do
+    table.insert(self.alphanumeric_commands, {{key}})
+  end
+  self.non_alphanumeric_commands = {}
+  for _, key in pairs(keytable.non_alphanumeric_keys) do
+    table.insert(self.non_alphanumeric_commands, {{key}})
+  end
+end
 
 function impl:map_to_key(command_or_nil)
   if command_or_nil == nil then

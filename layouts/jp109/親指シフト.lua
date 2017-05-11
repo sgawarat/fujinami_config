@@ -1,3 +1,4 @@
+-- Oyayubi Shifuto
 local assert = require "lib.assert"
 local layout = require "lib.layout"
 
@@ -8,9 +9,9 @@ return layout.new {
     local C = model:map_to_char()
 
     -- options
-    local left_thumb_key = keytable:map(options.left_thumb_key or "Space")
+    local left_thumb_key_list = keytable:map(options.left_thumb_key or "Space")
     local left_thumb_key_role = options.left_thumb_key_role or KeyRole.TRIGGER
-    local right_thumb_key = keytable:map(options.right_thumb_key or "Convert")
+    local right_thumb_key_list = keytable:map(options.right_thumb_key or "Convert")
     local right_thumb_key_role = options.right_thumb_key_role or KeyRole.TRIGGER
     local left_thumb_command = model:map_to_key(options.left_thumb_command or {"Space"})
     local right_thumb_command = model:map_to_key(options.right_thumb_command or {"Convert"})
@@ -50,42 +51,51 @@ return layout.new {
 
     return {
       deferred_key_flows {
+        key_lists = keytable.alphanumeric_key_lists,
+      },
+      deferred_key_flows {
         key_lists = {
-          keytable.alphanumeric_keys,
-          {left_thumb_key, right_thumb_key},
+          left_thumb_key_list,
+          right_thumb_key_list,
         }
       },
       immediate_key_flows {
-        key_lists = {
-          keytable.non_alphanumeric_keys,
-          keytable.modifier_keys,
-        }
+        key_lists = keytable.non_alphanumeric_key_lists,
+      },
+      immediate_key_flows {
+        key_lists = keytable.modifier_key_lists,
       },
       simple_mappings {
-        keys = keytable.alphanumeric_keys,
+        trigger_key_lists = keytable.alphanumeric_key_lists,
+        modifier_key_lists = keytable.modifier_key_lists,
         commands = no_thumb_commands,
         shift_commands = alphanumeric_shift_commands,
         cao_commands = alphanumeric_commands,
         cao_shift_commands = alphanumeric_shift_commands,
       },
       extended_mappings {
-        keys = keytable.alphanumeric_keys,
-        shift_keys = {{left_thumb_key, left_thumb_key_role}},
+        trigger_key_lists = keytable.alphanumeric_key_lists,
+        shift_key_list = {left_thumb_key_list, left_thumb_key_role},
         commands = left_thumb_commands,
       },
       extended_mappings {
-        keys = keytable.alphanumeric_keys,
-      shift_keys = {{right_thumb_key, right_thumb_key_role}},
+        trigger_key_lists = keytable.alphanumeric_key_lists,
+        shift_key_list = {right_thumb_key_list, right_thumb_key_role},
         commands = right_thumb_commands,
       },
       simple_mappings {
-        keys = {left_thumb_key, right_thumb_key},
+        trigger_key_lists = {left_thumb_key_list, right_thumb_key_list},
+        modifier_key_lists = keytable.modifier_key_lists,
         commands = {left_thumb_command, right_thumb_command},
       },
-      passthrough_mappings {
-        keys = keytable.non_alphanumeric_keys,
+      simple_mappings {
+        trigger_key_lists = keytable.non_alphanumeric_key_lists,
+        modifier_key_lists = keytable.modifier_key_lists,
+        commands = model.non_alphanumeric_commands,
       },
-      modifiers_mappings {},
+      modifiers_mappings {
+        modifier_key_lists = keytable.modifier_key_lists,
+      },
     }
   end
 }

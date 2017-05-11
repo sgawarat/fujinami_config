@@ -1,31 +1,25 @@
 require("platform." .. Platform.NAME)
 
 local assert = require "lib.assert"
+local inspect = require "lib.inspect"
 
 local MODIFIER_KEYS = {
-  Key.SHIFT_LEFT, Key.CONTROL_LEFT, Key.ALT_LEFT, Key.OS_LEFT,
-  Key.SHIFT_RIGHT, Key.CONTROL_RIGHT, Key.ALT_RIGHT, Key.OS_RIGHT,
-}
-local CAO_MODIFIER_KEYS = {
-  Key.CONTROL_LEFT, Key.ALT_LEFT, Key.OS_LEFT,
-  Key.CONTROL_RIGHT, Key.ALT_RIGHT, Key.OS_RIGHT,
+  Key.SHIFT_LEFT, Key.SHIFT_RIGHT,
+  Key.CONTROL_LEFT, Key.CONTROL_RIGHT,
+  Key.ALT_RIGHT, Key.ALT_LEFT,
+  Key.OS_LEFT, Key.OS_RIGHT,
 }
 local MODIFIER_MASKS = {
-  Mod.SHIFT_LEFT, Mod.CONTROL_LEFT, Mod.ALT_LEFT, Mod.OS_LEFT,
-  Mod.SHIFT_RIGHT, Mod.CONTROL_RIGHT, Mod.ALT_RIGHT, Mod.OS_RIGHT
-}
-local CAO_MODIFIER_MASKS = {
-  Mod.CONTROL_LEFT, Mod.ALT_LEFT, Mod.OS_LEFT,
-  Mod.CONTROL_RIGHT, Mod.ALT_RIGHT, Mod.OS_RIGHT,
-}
-local MODIFIER_LEFT_MASKS = {
-  Mod.SHIFT_LEFT, Mod.CONTROL_LEFT, Mod.ALT_LEFT, Mod.OS_LEFT
-}
-local MODIFIER_RIGHT_MASKS = {
-  Mod.SHIFT_RIGHT, Mod.CONTROL_RIGHT, Mod.ALT_RIGHT, Mod.OS_RIGHT
+  Mod.SHIFT_LEFT, Mod.SHIFT_RIGHT,
+  Mod.CONTROL_LEFT, Mod.CONTROL_RIGHT,
+  Mod.ALT_LEFT, Mod.ALT_RIGHT,
+  Mod.OS_LEFT, Mod.OS_RIGHT,
 }
 local MODIFIER_BOTH_MASKS = {
-  Mod.SHIFT_LEFT | Mod.SHIFT_RIGHT, Mod.CONTROL_LEFT | Mod.CONTROL_RIGHT, Mod.ALT_LEFT | Mod.ALT_RIGHT, Mod.OS_LEFT | Mod.OS_RIGHT
+  Mod.SHIFT_LEFT | Mod.SHIFT_RIGHT,
+  Mod.CONTROL_LEFT | Mod.CONTROL_RIGHT,
+  Mod.ALT_LEFT | Mod.ALT_RIGHT,
+  Mod.OS_LEFT | Mod.OS_RIGHT,
 }
 
 -- action[2]: コマンドが必要とする修飾キー
@@ -62,98 +56,222 @@ local function modify_command(base_command, extra_mods, swap_sides)
   return command
 end
 
-local function create_mappings(handle, keys, commands, shift_commands, extra_mods)
-  assert.type("table", keys)
-  assert.type("table", commands)
-  assert.type("table", shift_commands)
-  assert.eq(#keys, #commands)
-  assert.eq(#keys, #shift_commands)
+-- trigger_key_lists = {{keyA1, keyA2}, {keyB1, ...}, ...}
+-- modifier_key_lists = {{shift_left, ...}, {shift_right, ...}, {ctrl_left, ...}, ...}
+local function create_mappings(handle, trigger_key_lists, modifier_key_lists, commands, shift_commands_or_nil)
+  local shift_commands = shift_commands_or_nil or commands
+  local shift_extra_mods = shift_commands_or_nil and 0 or Mod.SHIFT
 
-  for i = 1, #keys do
-    assert.table_ne(nil, keys, i)
+  for i, keys in ipairs(trigger_key_lists) do
+    local command = modify_command(commands[i], 0, 0)
+    local shift_left_command = modify_command(shift_commands[i], shift_extra_mods, Mod.SHIFT_LEFT)
+    local shift_right_command = modify_command(shift_commands[i], shift_extra_mods, Mod.SHIFT_RIGHT)
+    local shift_both_command = modify_command(shift_commands[i], shift_extra_mods, Mod.SHIFT_LEFT | Mod.SHIFT_RIGHT)
 
-    -- default
-    fujinami.create_mapping(
-        handle,
-        {{keys[i], KeyRole.TRIGGER}},
-        commands[i])
+    for _, key in pairs(keys) do
+      fujinami.create_mapping(
+          handle,
+          {{key, KeyRole.TRIGGER}},
+          command)
 
-    -- ShiftLeft+
-    fujinami.create_mapping(
-        handle,
-        {{keys[i], KeyRole.TRIGGER}, {Key.SHIFT_LEFT, KeyRole.MODIFIER}},
-        modify_command(shift_commands[i], extra_mods, Mod.SHIFT_LEFT))
+      for _, shift_left_key in pairs(modifier_key_lists[1]) do
+        fujinami.create_mapping(
+            handle,
+            {{key, KeyRole.TRIGGER}, {shift_left_key, KeyRole.MODIFIER}},
+            shift_left_command)
 
-    -- ShiftRight+
-    fujinami.create_mapping(
-        handle,
-        {{keys[i], KeyRole.TRIGGER}, {Key.SHIFT_RIGHT, KeyRole.MODIFIER}},
-        modify_command(shift_commands[i], extra_mods, Mod.SHIFT_RIGHT))
+        for _, shift_right_key in pairs(modifier_key_lists[2]) do
+          fujinami.create_mapping(
+              handle,
+              {{key, KeyRole.TRIGGER}, {shift_left_key, KeyRole.MODIFIER}, {shift_right_key, KeyRole.MODIFIER}},
+              shift_both_command)
+        end
+      end
 
-    -- ShiftLeft+ShiftRight+
-    fujinami.create_mapping(
-        handle,
-        {{keys[i], KeyRole.TRIGGER}, {Key.SHIFT_LEFT, KeyRole.MODIFIER}, {Key.SHIFT_RIGHT, KeyRole.MODIFIER}},
-        modify_command(shift_commands[i], extra_mods, Mod.SHIFT_LEFT | Mod.SHIFT_RIGHT))
+      for _, shift_right_key in pairs(modifier_key_lists[2]) do
+        fujinami.create_mapping(
+            handle,
+            {{key, KeyRole.TRIGGER}, {shift_right_key, KeyRole.MODIFIER}},
+            shift_right_command)
+      end
+    end
   end
 end
 
-local function create_cao_mappings(handle, keys, commands, shift_commands, extra_mods)
-  assert.type("table", keys)
-  assert.type("table", commands)
-  assert.type("table", shift_commands)
-  assert.eq(#keys, #commands)
-  assert.eq(#keys, #shift_commands)
+local function create_cao_mappings(handle, trigger_key_lists, modifier_key_lists, commands, shift_commands_or_nil)
+  local shift_commands = shift_commands_or_nil or commands
+  local shift_extra_mods = shift_commands_or_nil and 0 or Mod.SHIFT
 
-  for cao_mods = 1, (1 << #CAO_MODIFIER_MASKS) - 1 do
+  local modifier_key_indexes = {0, 0, 0, 0, 0, 0}
+  while true do
     local active_keys = {}
     local mods = 0
-    for i = 1, #CAO_MODIFIER_MASKS do
-      if cao_mods & (1 << (i - 1)) ~= 0 then
-        table.insert(active_keys, {CAO_MODIFIER_KEYS[i], KeyRole.MODIFIER})
-        mods = mods | CAO_MODIFIER_MASKS[i]
+    local mod_i = 1
+    while mod_i <= (#modifier_key_lists - 2) do
+      if modifier_key_indexes[mod_i] < #modifier_key_lists[mod_i + 2] then
+        modifier_key_indexes[mod_i] = modifier_key_indexes[mod_i] + 1
+        table.insert(active_keys, {
+            modifier_key_lists[mod_i + 2][modifier_key_indexes[mod_i]],
+            KeyRole.MODIFIER})
+        mods = mods | MODIFIER_MASKS[mod_i + 2]
+        mod_i = mod_i + 1
+        break
+      else
+        modifier_key_indexes[mod_i] = 0
+        mod_i = mod_i + 1
       end
     end
-
-    for i = 1, #keys do
-      assert.table_ne(nil, keys, i)
-
-      -- default
-      table.insert(active_keys, {keys[i], KeyRole.TRIGGER})
-      fujinami.create_mapping(
-          handle,
-          active_keys,
-          modify_command(commands[i], mods, mods))
-
-      -- ShiftLeft+
-      table.insert(active_keys, {Key.SHIFT_LEFT, KeyRole.MODIFIER})
-      fujinami.create_mapping(
-          handle,
-          active_keys,
-          modify_command(shift_commands[i], extra_mods | mods, Mod.SHIFT_LEFT | mods))
-      table.remove(active_keys)
-
-      -- ShiftRight+
-      table.insert(active_keys, {Key.SHIFT_RIGHT, KeyRole.MODIFIER})
-      fujinami.create_mapping(
-          handle,
-          active_keys,
-          modify_command(shift_commands[i], extra_mods | mods, Mod.SHIFT_RIGHT | mods))
-      table.remove(active_keys)
-
-      -- ShiftLeft+ShiftRight+
-      table.insert(active_keys, {Key.SHIFT_LEFT, KeyRole.MODIFIER})
-      table.insert(active_keys, {Key.SHIFT_RIGHT, KeyRole.MODIFIER})
-      fujinami.create_mapping(
-          handle,
-          active_keys,
-          modify_command(shift_commands[i], extra_mods | mods, Mod.SHIFT_LEFT | Mod.SHIFT_RIGHT | mods))
-      table.remove(active_keys)
-      table.remove(active_keys)
-
-      -- remove a trigger key
-      table.remove(active_keys)
+    if mods == 0 then
+      break
     end
+    while mod_i <= (#modifier_key_lists - 2) do
+        if modifier_key_indexes[mod_i] ~= 0 then
+          table.insert(active_keys, {
+              modifier_key_lists[mod_i + 2][modifier_key_indexes[mod_i]],
+              KeyRole.MODIFIER})
+          mods = mods | MODIFIER_MASKS[mod_i + 2]
+        end
+        mod_i = mod_i + 1
+    end
+
+    for i, keys in ipairs(trigger_key_lists) do
+      local command = modify_command(commands[i], mods, mods)
+      local shift_left_command = modify_command(shift_commands[i], shift_extra_mods | mods, Mod.SHIFT_LEFT | mods)
+      local shift_right_command = modify_command(shift_commands[i], shift_extra_mods | mods, Mod.SHIFT_RIGHT | mods)
+      local shift_both_command = modify_command(shift_commands[i], shift_extra_mods | mods, Mod.SHIFT_LEFT | Mod.SHIFT_RIGHT | mods)
+
+      for _, key in pairs(keys) do
+        table.insert(active_keys, {key, KeyRole.TRIGGER})
+        fujinami.create_mapping(
+            handle,
+            active_keys,
+            command)
+
+        for _, shift_left_key in pairs(modifier_key_lists[1]) do
+          table.insert(active_keys, {shift_left_key, KeyRole.MODIFIER})
+          fujinami.create_mapping(
+              handle,
+              active_keys,
+              shift_left_command)
+
+          for _, shift_right_key in pairs(modifier_key_lists[2]) do
+            table.insert(active_keys, {shift_right_key, KeyRole.MODIFIER})
+            fujinami.create_mapping(
+                handle,
+                active_keys,
+                shift_both_command)
+            table.remove(active_keys)
+          end
+          table.remove(active_keys)
+        end
+
+        for _, shift_right_key in pairs(modifier_key_lists[2]) do
+          table.insert(active_keys, {shift_right_key, KeyRole.MODIFIER})
+          fujinami.create_mapping(
+              handle,
+              active_keys,
+              shift_right_command)
+          table.remove(active_keys)
+        end
+
+        table.remove(active_keys)
+      end
+    end
+  end
+end
+
+local function create_passthrough_mappings(handle, trigger_key_lists, modifier_key_lists)
+  for i, keys in ipairs(trigger_key_lists) do
+    for _, key in pairs(keys) do
+      fujinami.create_mapping(
+          handle,
+          {{key, KeyRole.TRIGGER}},
+          {{key}})
+    end
+  end
+
+  local modifier_key_indexes = {0, 0, 0, 0, 0, 0, 0, 0}
+  while true do
+    local active_keys = {}
+    local mods = 0
+    local mod_i = 1
+    while mod_i <= #modifier_key_lists do
+      if modifier_key_indexes[mod_i] < #modifier_key_lists[mod_i] then
+        modifier_key_indexes[mod_i] = modifier_key_indexes[mod_i] + 1
+        table.insert(active_keys, {
+            modifier_key_lists[mod_i][modifier_key_indexes[mod_i]],
+            KeyRole.MODIFIER})
+        mods = mods | MODIFIER_MASKS[mod_i]
+        mod_i = mod_i + 1
+        break
+      else
+        modifier_key_indexes[mod_i] = 0
+        mod_i = mod_i + 1
+      end
+    end
+    if mods == 0 then
+      break
+    end
+    while mod_i <= #modifier_key_lists do
+        if modifier_key_indexes[mod_i] ~= 0 then
+          table.insert(active_keys, {
+              modifier_key_lists[mod_i][modifier_key_indexes[mod_i]],
+              KeyRole.MODIFIER})
+          mods = mods | MODIFIER_MASKS[mod_i]
+        end
+        mod_i = mod_i + 1
+    end
+
+    for i, keys in ipairs(trigger_key_lists) do
+      for _, key in pairs(keys) do
+        table.insert(active_keys, {key, KeyRole.TRIGGER})
+        fujinami.create_mapping(
+            handle,
+            active_keys,
+            {{key, mods}})
+        table.remove(active_keys)
+      end
+    end
+  end
+end
+
+local function create_modifiers_mappings(handle, modifier_key_lists)
+  local modifier_key_indexes = {0, 0, 0, 0, 0, 0, 0, 0}
+  while true do
+    local active_keys = {}
+    local mods = 0
+    local mod_i = 1
+    while mod_i <= #modifier_key_lists do
+      if modifier_key_indexes[mod_i] < #modifier_key_lists[mod_i] then
+        modifier_key_indexes[mod_i] = modifier_key_indexes[mod_i] + 1
+        table.insert(active_keys, {
+            modifier_key_lists[mod_i][modifier_key_indexes[mod_i]],
+            KeyRole.MODIFIER})
+        mods = mods | MODIFIER_MASKS[mod_i]
+        mod_i = mod_i + 1
+        break
+      else
+        modifier_key_indexes[mod_i] = 0
+        mod_i = mod_i + 1
+      end
+    end
+    if mods == 0 then
+      break
+    end
+    while mod_i <= #modifier_key_lists do
+        if modifier_key_indexes[mod_i] ~= 0 then
+          table.insert(active_keys, {
+              modifier_key_lists[mod_i][modifier_key_indexes[mod_i]],
+              KeyRole.MODIFIER})
+          mods = mods | MODIFIER_MASKS[mod_i]
+        end
+        mod_i = mod_i + 1
+    end
+
+    fujinami.create_mapping(
+        handle,
+        active_keys,
+        {{0, mods}})
   end
 end
 
@@ -219,7 +337,7 @@ function mapping(t)
   assert.type("table", t)
   assert.type("table", t.active_keys)
   assert.type("table", t.commands)
-  assert.eq(#t.keys, #t.commands)
+  assert.eq(#t.active_keys, #t.commands)
 
   return function (handle)
     for i = 1, #t.active_keys do
@@ -231,78 +349,80 @@ end
 -- 単純な記述でマッピングを定義する
 function simple_mappings(t)
   assert.type("table", t)
-  assert.type("table", t.keys)
+  assert.type("table", t.trigger_key_lists)
+  assert.type("table", t.modifier_key_lists)
   assert.type("table", t.commands)
+  assert.eq(#t.trigger_key_lists, #t.commands)
+  assert.eq(#t.modifier_key_lists, #MODIFIER_KEYS)
 
   return function (handle)
-    local shift_commands = t.shift_commands or t.commands
     local cao_commands = t.cao_commands or t.commands
-    local cao_shift_commands = t.cao_shift_commands or shift_commands
-    local extra_mods = t.shift_commands and 0 or Mod.SHIFT
-    local cao_extra_mods = t.cao_shift_commands and 0 or extra_mods
+    local cao_shift_commands = t.cao_shift_commands or t.shift_commands
 
-    create_mappings(handle, t.keys, t.commands, shift_commands, extra_mods)
-    create_cao_mappings(handle, t.keys, cao_commands, cao_shift_commands, cao_extra_mods)
+    create_mappings(
+        handle,
+        t.trigger_key_lists,
+        t.modifier_key_lists,
+        t.commands,
+        t.shift_commands)
+    create_cao_mappings(
+        handle,
+        t.trigger_key_lists,
+        t.modifier_key_lists,
+        cao_commands,
+        cao_shift_commands)
   end
 end
 
 -- キーをそのままにコマンドとしたマッピングを定義する
 function passthrough_mappings(t)
   assert.type("table", t)
-  assert.type("table", t.keys)
+  assert.type("table", t.trigger_key_lists)
+  assert.type("table", t.modifier_key_lists)
 
   return function (handle)
-    for mods = 0, Mod.ALL do
-      local active_keys = {}
-
-      for i, mod in ipairs(MODIFIER_MASKS) do
-        if mods & mod ~= 0 then
-          table.insert(active_keys, {MODIFIER_KEYS[i], KeyRole.MODIFIER})
-        end
-      end
-
-      for i = 1, #t.keys do
-        assert.table_ne(nil, t.keys, i)
-
-        table.insert(active_keys, {t.keys[i], KeyRole.TRIGGER})
-        fujinami.create_mapping(handle, active_keys, {{t.keys[i], mods}})
-        table.remove(active_keys)
-      end
-    end
+    create_passthrough_mappings(
+        handle,
+        t.trigger_key_lists,
+        t.modifier_key_lists)
   end
 end
 
 -- 任意の修飾キーを指定するマッピングを定義する
 function extended_mappings(t)
   assert.type("table", t)
-  assert.type("table", t.keys)
-  assert.type("table", t.shift_keys)
+  assert.type("table", t.trigger_key_lists)
+  assert.type("table", t.shift_key_list)
   assert.type("table", t.commands)
-  assert.eq(#t.keys, #t.commands)
+  assert.eq(#t.trigger_key_lists, #t.commands)
 
   return function (handle)
-    local active_keys = t.shift_keys
-    for i = 1, #t.keys do
-      table.insert(active_keys, {t.keys[i], KeyRole.TRIGGER})
-      fujinami.create_mapping(handle, active_keys, modify_command(t.commands[i], t.extra_mods or 0, t.mod_sides or 0))
-      table.remove(active_keys)
+    local shift_key_role = t.shift_key_list[2] or KeyRole.TRIGGER
+    for _, shift_key in pairs(t.shift_key_list[1]) do
+      local active_keys = {{shift_key, shift_key_role}}
+
+      for i, key_list in ipairs(t.trigger_key_lists) do
+        local command = modify_command(
+            t.commands[i],
+            t.extra_mods or 0,
+            t.mod_sides or 0)
+        for _, key in pairs(key_list) do
+          table.insert(active_keys, {key, KeyRole.TRIGGER})
+          fujinami.create_mapping(
+              handle,
+              active_keys,
+              command)
+          table.remove(active_keys)
+        end
+      end
     end
   end
 end
 
 -- 標準の修飾キーを組み合わせたマッピングを定義する
-function modifiers_mappings()
+function modifiers_mappings(t)
   return function (handle)
-    for mods = 1, Mod.ALL do
-      local active_keys = {}
-      for i, mod in ipairs(MODIFIER_MASKS) do
-        if mods & mod ~= 0 then
-          table.insert(active_keys, {MODIFIER_KEYS[i], KeyRole.MODIFIER})
-        end
-      end
-
-      fujinami.create_mapping(handle, active_keys, {{0, mods}})
-    end
+    create_modifiers_mappings(handle, t.modifier_key_lists)
   end
 end
 
@@ -322,6 +442,7 @@ end
 -- 状態
 local current_model = nil
 local current_keytable = nil
+local current_keytable_options = nil
 
 function global_option(t)
   assert.type("table", t)
@@ -336,6 +457,11 @@ end
 function keytable(keytable_or_keytable_name)
   assert.types({"string", "table"}, keytable_or_keytable_name)
   current_keytable = keytable_or_keytable_name
+  current_keytable_options = nil
+
+  return function (options)
+    current_keytable_options = options
+  end
 end
 
 function layout(layout_or_layout_name)
@@ -355,6 +481,9 @@ function layout(layout_or_layout_name)
   if type(current_keytable) ~= "table" then
     assert.fail("current keytable is not valid (keytable:%s)", current_keytable)
   end
+
+  current_keytable:apply(current_keytable_options)
+  current_model:apply(current_keytable)
 
   if type(layout_or_layout_name) == "string" then
     local layout_id = current_keytable.name .. "." .. layout_or_layout_name

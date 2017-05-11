@@ -19,21 +19,28 @@ return layout.new {
 
     return {
       immediate_key_flows {
-        key_lists = {
-          keytable.alphanumeric_keys,
-          keytable.non_alphanumeric_keys,
-          keytable.modifier_keys,
-        }
+        key_lists = keytable.alphanumeric_key_lists,
+      },
+      immediate_key_flows {
+        key_lists = keytable.non_alphanumeric_key_lists,
+      },
+      immediate_key_flows {
+        key_lists = keytable.modifier_key_lists,
       },
       simple_mappings {
-        keys = keytable.alphanumeric_keys,
+        trigger_key_lists = keytable.alphanumeric_key_lists,
+        modifier_key_lists = keytable.modifier_key_lists,
         commands = alphanumeric_commands,
         shift_commands = alphanumeric_shift_commands,
       },
-      passthrough_mappings {
-        keys = keytable.non_alphanumeric_keys,
+      simple_mappings {
+        trigger_key_lists = keytable.non_alphanumeric_key_lists,
+        modifier_key_lists = keytable.modifier_key_lists,
+        commands = model.non_alphanumeric_commands,
       },
-      modifiers_mappings {},
+      modifiers_mappings {
+        modifier_key_lists = keytable.modifier_key_lists,
+      },
     }
   end
 }

@@ -135,6 +135,24 @@ return {
     ["変換"] = Key.HENKAN,
     ["カタカナ/ひらがな"] = Key.KATAKANAHIRAGANA,
   },
+  ALPHANUMERIC_KEY_NAMES = {
+    "1!", "2\"", "3#", "4$", "5%", "6&", "7'", "8(", "9)", "0", "-=", "^~", "\\|",
+    "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "@`", "[{",
+    "A", "S", "D", "F", "G", "H", "J", "K", "L", ";+", ":*", "]}",
+    "Z", "X", "C", "V", "B", "N", "M", ",<", ".>", "/?", "\\_",
+  },
+  NON_ALPHANUMERIC_KEY_NAMES = {
+    "Escape", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12", "F13", "F14", "F15", "F16", "F17", "F18", "F19", "F20", "F21", "F22", "F23", "F24",
+    "HankakuZenkaku", "Backspace", "Tab", "Enter", "CapsLock", "NonConvert", "Space", "Convert", "KatakanaHiragana", "ContextMenu",
+    "PrintScreen", "ScrollLock", "Pause", "Insert", "Home", "PageUp", "Delete", "End", "PageDown", "Up", "Down", "Left", "Right",
+    "NumLock", "Numpad0", "Numpad1", "Numpad2", "Numpad3", "Numpad4", "Numpad5", "Numpad6", "Numpad7", "Numpad8", "Numpad9", "NumpadDecimal", "NumpadAdd", "NumpadSubtract", "NumpadMultiply", "NumpadDivide", "NumpadEnter",
+  },
+  MODIFIER_KEY_NAMES = {
+    "ShiftLeft", "ShiftRight",
+    "ControlLeft", "ControlRight",
+    "AltLeft", "AltRight",
+    "OSLeft", "OSRight",
+  },
   ALPHANUMERIC_KEYS = {
     Key.DIGIT_1, Key.DIGIT_2, Key.DIGIT_3, Key.DIGIT_4, Key.DIGIT_5, Key.DIGIT_6, Key.DIGIT_7, Key.DIGIT_8, Key.DIGIT_9, Key.DIGIT_0, Key.MINUS, Key.EQUAL, Key.YEN,
     Key.Q, Key.W, Key.E, Key.R, Key.T, Key.Y, Key.U, Key.I, Key.O, Key.P, Key.LEFTBRACE, Key.RIGHTBRACE,
@@ -148,7 +166,9 @@ return {
     Key.NUMLOCK, Key.KP0, Key.KP1, Key.KP2, Key.KP3, Key.KP4, Key.KP5, Key.KP6, Key.KP7, Key.KP8, Key.KP9, Key.KPDOT, Key.KPPLUS, Key.KPMINUS, Key.KPASTERISK, Key.KPSLASH, Key.KPENTER,
   },
   MODIFIER_KEYS = {
-    Key.LEFTSHIFT, Key.LEFTCTRL, Key.LEFTALT, Key.LEFTMETA,
-    Key.RIGHTSHIFT, Key.RIGHTCTRL, Key.RIGHTALT, Key.RIGHTMETA,
+    Key.LEFTSHIFT, Key.RIGHTSHIFT,
+    Key.LEFTCTRL, Key.RIGHTCTRL,
+    Key.LEFTALT, Key.RIGHTALT,
+    Key.LEFTMETA, Key.RIGHTMETA,
   },
 }

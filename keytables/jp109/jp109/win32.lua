@@ -135,6 +135,24 @@ return {
     ["変換"] = Key.CONVERT,
     ["カタカナ/ひらがな"] = Key.KANA,
   },
+  ALPHANUMERIC_KEY_NAMES = {
+    "1!", "2\"", "3#", "4$", "5%", "6&", "7'", "8(", "9)", "0", "-=", "^~", "\\|",
+    "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "@`", "[{",
+    "A", "S", "D", "F", "G", "H", "J", "K", "L", ";+", ":*", "]}",
+    "Z", "X", "C", "V", "B", "N", "M", ",<", ".>", "/?", "\\_",
+  },
+  NON_ALPHANUMERIC_KEY_NAMES = {
+    "Escape", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12", "F13", "F14", "F15", "F16", "F17", "F18", "F19", "F20", "F21", "F22", "F23", "F24",
+    "HankakuZenkaku", "Backspace", "Tab", "Enter", "CapsLock", "NonConvert", "Space", "Convert", "KatakanaHiragana", "ContextMenu",
+    "PrintScreen", "ScrollLock", "Pause", "Insert", "Home", "PageUp", "Delete", "End", "PageDown", "Up", "Down", "Left", "Right",
+    "NumLock", "Numpad0", "Numpad1", "Numpad2", "Numpad3", "Numpad4", "Numpad5", "Numpad6", "Numpad7", "Numpad8", "Numpad9", "NumpadDecimal", "NumpadAdd", "NumpadSubtract", "NumpadMultiply", "NumpadDivide", "NumpadEnter",
+  },
+  MODIFIER_KEY_NAMES = {
+    "ShiftLeft", "ShiftRight",
+    "ControlLeft", "ControlRight",
+    "AltLeft", "AltRight",
+    "OSLeft", "OSRight",
+  },
   ALPHANUMERIC_KEYS = {
     Key.DIGIT_1, Key.DIGIT_2, Key.DIGIT_3, Key.DIGIT_4, Key.DIGIT_5, Key.DIGIT_6, Key.DIGIT_7, Key.DIGIT_8, Key.DIGIT_9, Key.DIGIT_0, Key.OEM_MINUS, Key.OEM_7, Key.OEM_5,
     Key.Q, Key.W, Key.E, Key.R, Key.T, Key.Y, Key.U, Key.I, Key.O, Key.P, Key.OEM_3, Key.OEM_4,
@@ -142,14 +160,15 @@ return {
     Key.Z, Key.X, Key.C, Key.V, Key.B, Key.N, Key.M, Key.OEM_COMMA, Key.OEM_PERIOD, Key.OEM_2, Key.OEM_102,
   },
   NON_ALPHANUMERIC_KEYS = {
-    Key.OEM_102,
     Key.ESCAPE, Key.F1, Key.F2, Key.F3, Key.F4, Key.F5, Key.F6, Key.F7, Key.F8, Key.F9, Key.F10, Key.F11, Key.F12, Key.F13, Key.F14, Key.F15, Key.F16, Key.F17, Key.F18, Key.F19, Key.F20, Key.F21, Key.F22, Key.F23, Key.F24,
-    Key.HANKAKU_ZENKAKU, Key.BACK, Key.TAB, Key.RETURN, Key.CAPITAL, Key.NONCONVERT, Key.SPACE, Key.CONVERT, Key.APPS,
+    Key.HANKAKU_ZENKAKU, Key.BACK, Key.TAB, Key.RETURN, Key.CAPITAL, Key.NONCONVERT, Key.SPACE, Key.CONVERT, Key.KANA, Key.APPS,
     Key.SNAPSHOT, Key.SCROLL, Key.PAUSE, Key.INSERT, Key.HOME, Key.PRIOR, Key.DELETE, Key.END, Key.NEXT, Key.UP, Key.DOWN, Key.LEFT, Key.RIGHT,
     Key.NUMLOCK, Key.NUMPAD0, Key.NUMPAD1, Key.NUMPAD2, Key.NUMPAD3, Key.NUMPAD4, Key.NUMPAD5, Key.NUMPAD6, Key.NUMPAD7, Key.NUMPAD8, Key.NUMPAD9, Key.DECIMAL, Key.ADD, Key.SUBTRACT, Key.MULTIPLY, Key.DIVIDE, Key.NUMPAD_RETURN,
   },
   MODIFIER_KEYS = {
-    Key.LSHIFT, Key.LCONTROL, Key.LMENU, Key.LWIN,
-    Key.RSHIFT, Key.RCONTROL, Key.RMENU, Key.RWIN,
+    Key.LSHIFT, Key.RSHIFT,
+    Key.LCONTROL, Key.RCONTROL,
+    Key.RMENU, Key.LMENU,
+    Key.LWIN, Key.RWIN,
   },
 }
