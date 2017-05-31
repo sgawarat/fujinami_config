@@ -63,10 +63,10 @@ return layout.new {
     end
 
     return {
-      deferred_key_flows {
+      simul_key_flows {
         key_lists = keytable.alphanumeric_key_lists,
       },
-      deferred_key_flows {
+      simul_key_flows {
         key_lists = {
           left_thumb_key_list,
           right_thumb_key_list,

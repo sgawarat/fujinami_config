@@ -84,8 +84,10 @@ local impl_mt = {
 
 function impl:apply(keytable)
   self.alphanumeric_commands = {}
+  self.alphanumeric_shift_commands = {}
   for _, key in pairs(keytable.alphanumeric_keys) do
     table.insert(self.alphanumeric_commands, {{key}})
+    table.insert(self.alphanumeric_shift_commands, {{key, Mod.SHIFT}})
   end
   self.non_alphanumeric_commands = {}
   for _, key in pairs(keytable.non_alphanumeric_keys) do

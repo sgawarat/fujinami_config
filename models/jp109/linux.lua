@@ -348,6 +348,43 @@ return {
     ["ぐぁ"] = {{Key.G}, {Key.W}, {Key.A}},
     ["どぅ"] = {{Key.D}, {Key.W}, {Key.U}},
 
+    ["ひぃ"] = {{Key.H}, {Key.I}, {Key.L}, {Key.I}},
+    ["ひぇ"] = {{Key.H}, {Key.I}, {Key.L}, {Key.E}},
+    ["びぃ"] = {{Key.B}, {Key.I}, {Key.L}, {Key.I}},
+    ["びぇ"] = {{Key.B}, {Key.I}, {Key.L}, {Key.E}},
+    ["きぃ"] = {{Key.K}, {Key.I}, {Key.L}, {Key.I}},
+    ["きぇ"] = {{Key.K}, {Key.I}, {Key.L}, {Key.E}},
+    ["ぎぃ"] = {{Key.G}, {Key.I}, {Key.L}, {Key.I}},
+    ["ぎぇ"] = {{Key.G}, {Key.I}, {Key.L}, {Key.E}},
+    ["にぃ"] = {{Key.N}, {Key.I}, {Key.L}, {Key.I}},
+    ["にぇ"] = {{Key.N}, {Key.I}, {Key.L}, {Key.E}},
+    ["づぁ"] = {{Key.D}, {Key.U}, {Key.L}, {Key.A}},
+    ["づぃ"] = {{Key.D}, {Key.U}, {Key.L}, {Key.I}},
+    ["づぇ"] = {{Key.D}, {Key.U}, {Key.L}, {Key.E}},
+    ["づぉ"] = {{Key.D}, {Key.U}, {Key.L}, {Key.O}},
+    ["ふぅ"] = {{Key.H}, {Key.U}, {Key.L}, {Key.U}},
+    ["ぶぁ"] = {{Key.B}, {Key.U}, {Key.L}, {Key.A}},
+    ["ぶぃ"] = {{Key.B}, {Key.U}, {Key.L}, {Key.I}},
+    ["ぶぅ"] = {{Key.B}, {Key.U}, {Key.L}, {Key.U}},
+    ["ぶぇ"] = {{Key.B}, {Key.U}, {Key.L}, {Key.E}},
+    ["ぶぉ"] = {{Key.B}, {Key.U}, {Key.L}, {Key.O}},
+    ["くゎ"] = {{Key.K}, {Key.U}, {Key.X}, {Key.W}, {Key.A}},
+    ["ぐゎ"] = {{Key.G}, {Key.U}, {Key.X}, {Key.W}, {Key.A}},
+    ["ぐぃ"] = {{Key.G}, {Key.U}, {Key.X}, {Key.W}, {Key.I}},
+    ["ぐぇ"] = {{Key.G}, {Key.U}, {Key.X}, {Key.K}, {Key.E}},
+    ["ぐぉ"] = {{Key.G}, {Key.U}, {Key.X}, {Key.K}, {Key.O}},
+    ["りぃ"] = {{Key.R}, {Key.I}, {Key.X}, {Key.K}, {Key.I}},
+    ["りぇ"] = {{Key.R}, {Key.I}, {Key.X}, {Key.K}, {Key.E}},
+    ["しぃ"] = {{Key.S}, {Key.I}, {Key.X}, {Key.K}, {Key.I}},
+    ["じぃ"] = {{Key.J}, {Key.I}, {Key.X}, {Key.K}, {Key.I}},
+    ["ぴぃ"] = {{Key.P}, {Key.I}, {Key.X}, {Key.K}, {Key.I}},
+    ["ぴぇ"] = {{Key.P}, {Key.I}, {Key.X}, {Key.K}, {Key.E}},
+    ["みぃ"] = {{Key.M}, {Key.I}, {Key.X}, {Key.K}, {Key.I}},
+    ["みぇ"] = {{Key.M}, {Key.I}, {Key.X}, {Key.K}, {Key.E}},
+    ["ちぃ"] = {{Key.F}, {Key.I}, {Key.X}, {Key.K}, {Key.I}},
+    ["ぢぃ"] = {{Key.G}, {Key.I}, {Key.X}, {Key.K}, {Key.I}},
+    ["ぬぉ"] = {{Key.N}, {Key.U}, {Key.X}, {Key.K}, {Key.O}},
+
     -- 全角記号
     ["−"] = {{Key.LEFTBRACE, Mod.SHIFT}, {Key.MINUS}}, -- ハイフン
     ["＾"] = {{Key.LEFTBRACE, Mod.SHIFT}, {Key.EQUAL}},
@@ -392,5 +429,7 @@ return {
     ["゜"] = {{Key.LEFTBRACE, Mod.SHIFT}, {Key.DIGIT_3}, {Key.DIGIT_0}, {Key.DIGIT_9}, {Key.C}},
     ["・"] = {{Key.LEFTBRACE, Mod.SHIFT}, {Key.DIGIT_3}, {Key.DIGIT_0}, {Key.F}, {Key.B}},
     ["ー"] = {{Key.LEFTBRACE, Mod.SHIFT}, {Key.DIGIT_3}, {Key.DIGIT_0}, {Key.F}, {Key.C}}, -- 長音
+    ["―"] = {{Key.LEFTBRACE, Mod.SHIFT}, {Key.DIGIT_2}, {Key.DIGIT_0}, {Key.DIGIT_1}, {Key.DIGIT_4}}, -- 全角ダッシュ
+    ["…"] = {{Key.LEFTBRACE, Mod.SHIFT}, {Key.DIGIT_2}, {Key.DIGIT_0}, {Key.DIGIT_2}, {Key.DIGIT_6}},
   }
 }
