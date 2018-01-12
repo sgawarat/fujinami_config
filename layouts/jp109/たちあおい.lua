@@ -1,4 +1,4 @@
--- たちあおい
+-- たちあおい v2.0
 local assert = require "lib.assert"
 local inspect = require "lib.inspect"
 local layout = require "lib.layout"
@@ -26,9 +26,9 @@ return layout.new {
     -- である調向け
     local aoi_alphanumeric_commands = model:map_to_keys {
       {"1"}, {"2"}, {"3"}, {"4"}, {"5"},    {},      {"6"},      {"7"},      {"8"},      {"9"}, {"0"}, {"["}, {"]"},
-      {"p"}, {"d"}, {"r"}, {"g"}, {"f"}, {"@"}, {"y", "e"}, {"y", "o"}, {"u"}, {"o"}, {"l"}, {"\""},
-      {"n"}, {"s"}, {"t"}, {"k"}, {"h"}, {":"}, {"y", "u"},      {"a"}, {"i"}, {"e"}, {"q"}, {"x"},
-      {"z"}, {"b"}, {"w"}, {"m"}, {"v"}, {";"}, {"y", "a"},      {"-"}, {","}, {"."}, {"/"},
+      {"p"}, {"d"}, {"r"}, {"g"}, {"f"}, {"@"}, {"y", "e"},      {"q"}, {"i"}, {"e"}, {"-"}, {"\""},
+      {"n"}, {"s"}, {"t"}, {"k"}, {"h"}, {":"}, {"y", "a"},      {"a"}, {"u"}, {"o"}, {"l"}, {"x"},
+      {"z"}, {"b"}, {"w"}, {"m"}, {"v"}, {";"}, {"y", "u"}, {"y", "o"}, {","}, {"."}, {"/"},
     }
 --    local aoi_alphanumeric_shift_commands = model:map_to_keys(shr.QWERTY_SHIFT_COMMANDS)
     local aoi_alphanumeric_shift_commands = model:map_to_keys {
