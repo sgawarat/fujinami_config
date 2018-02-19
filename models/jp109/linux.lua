@@ -431,5 +431,9 @@ return {
     ["ー"] = {{Key.LEFTBRACE, Mod.SHIFT}, {Key.DIGIT_3}, {Key.DIGIT_0}, {Key.F}, {Key.C}}, -- 長音
     ["―"] = {{Key.LEFTBRACE, Mod.SHIFT}, {Key.DIGIT_2}, {Key.DIGIT_0}, {Key.DIGIT_1}, {Key.DIGIT_4}}, -- 全角ダッシュ
     ["…"] = {{Key.LEFTBRACE, Mod.SHIFT}, {Key.DIGIT_2}, {Key.DIGIT_0}, {Key.DIGIT_2}, {Key.DIGIT_6}},
+
+    ["Ctrl+Left"] = {{Key.LEFT, Mod.CONTROL}},
+    ["Ctrl+Right"] = {{Key.RIGHT, Mod.CONTROL}},
   }
 }
+
