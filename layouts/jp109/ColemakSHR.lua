@@ -19,6 +19,9 @@ return layout.new {
     local left_left_thumb_key_list = keytable:map(options.left_thumb_key or "NonConvert")
     local left_left_thumb_key_role = options.left_thumb_key_role or KeyRole.MODIFIER
     local left_left_thumb_key_command = model:map_to_key(options.left_thumb_key_command or {{0}})
+    local right_right_thumb_key_list = keytable:map(options.right_right_thumb_key or "KatakanaHiragana")
+    local right_right_thumb_key_role = options.right_right_thumb_key_role or KeyRole.TRIGGER
+    local right_right_thumb_key_command = model:map_to_key(options.right_right_thumb_key_command or {"KatakanaHiragana"})
 
     local colemak_alphanumeric_commands = model:map_to_keys {
       {"1"}, {"2"}, {"3"}, {"4"}, {"5"}, {}, {"6"}, {"7"}, {"8"}, {"9"}, {"0"}, {"["}, {"]"},
@@ -73,6 +76,7 @@ return layout.new {
       immediate_key_flows {
         key_lists = {
           left_left_thumb_key_list,
+          right_right_thumb_key_list,
         }
       },
       immediate_key_flows {
@@ -107,9 +111,9 @@ return layout.new {
         shift_key_command = left_left_thumb_key_command,
       },
       simple_mappings {
-        trigger_key_lists = {left_thumb_key_list, right_thumb_key_list},
+        trigger_key_lists = {left_thumb_key_list, right_thumb_key_list, right_right_thumb_key_list},
         modifier_key_lists = keytable.modifier_key_lists,
-        commands = {left_thumb_key_command, right_thumb_key_command},
+        commands = {left_thumb_key_command, right_thumb_key_command, right_right_thumb_key_command},
       },
       simple_mappings {
         trigger_key_lists = keytable.non_alphanumeric_key_lists,
