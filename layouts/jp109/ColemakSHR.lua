@@ -23,18 +23,8 @@ return layout.new {
     local right_right_thumb_key_role = options.right_right_thumb_key_role or KeyRole.TRIGGER
     local right_right_thumb_key_command = model:map_to_key(options.right_right_thumb_key_command or {"KatakanaHiragana"})
 
-    local colemak_alphanumeric_commands = model:map_to_keys {
-      {"1"}, {"2"}, {"3"}, {"4"}, {"5"}, {}, {"6"}, {"7"}, {"8"}, {"9"}, {"0"}, {"["}, {"]"},
-      {"q"}, {"w"}, {"f"}, {"p"}, {"g"}, {}, {"j"}, {"l"}, {"u"}, {"y"}, {";"}, {"\""},
-      {"a"}, {"r"}, {"s"}, {"t"}, {"d"}, {}, {"h"}, {"n"}, {"e"}, {"i"}, {"o"}, {"_"},
-      {"z"}, {"x"}, {"c"}, {"v"}, {"b"}, {}, {"k"}, {"m"}, {","}, {"."}, {"/"},
-    }
-    local colemak_alphanumeric_shift_commands = model:map_to_keys {
-      {"!"}, {"@"}, {"#"}, {"$"}, {"%"}, {}, {"^"}, {"&"}, {"*"}, {"("}, {")"}, {"{"}, {"}"},
-      {"Q"}, {"W"}, {"F"}, {"P"}, {"G"}, {}, {"J"}, {"L"}, {"U"}, {"Y"}, {":"}, {"'"},
-      {"A"}, {"R"}, {"S"}, {"T"}, {"D"}, {}, {"H"}, {"N"}, {"E"}, {"I"}, {"O"}, {"-"},
-      {"Z"}, {"X"}, {"C"}, {"V"}, {"B"}, {}, {"K"}, {"M"}, {"<"}, {">"}, {"?"},
-    }
+    local colemak_alphanumeric_commands = model:map_to_keys(shr.COLEMAK_COMMANDS)
+    local colemak_alphanumeric_shift_commands = model:map_to_keys(shr.COLEMAK_SHIFT_COMMANDS)
     local qwerty_alphanumeric_commands = model:map_to_keys {
       {"1"}, {"2"}, {"3"}, {"4"}, {"5"}, {"6"}, {"7"}, {"8"}, {"9"}, {"0"}, {"-"}, {"^"}, {"\\|"},
       {"q"}, {"w"}, {"e"}, {"r"}, {"t"}, {"y"}, {"u"}, {"i"}, {"o"}, {"p"}, {"@"}, {"["},

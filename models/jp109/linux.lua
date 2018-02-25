@@ -434,6 +434,8 @@ return {
 
     ["Ctrl+Left"] = {{Key.LEFT, Mod.CONTROL}},
     ["Ctrl+Right"] = {{Key.RIGHT, Mod.CONTROL}},
+    ["Ctrl+Backspace"] = {{Key.BACKSPACE, Mod.CONTROL}},
+    ["Ctrl+Delete"] = {{Key.DELETE, Mod.CONTROL}},
   }
 }
 
