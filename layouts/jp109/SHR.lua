@@ -55,8 +55,8 @@ return {
   },
   LEFT_LEFT_THUMB_COMMANDS = {
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-    {}, {}, {}, {}, {}, {}, {}, {"Ctrl+Left"}, {"Up"}, {"Ctrl+Right"}, {"End"}, {},
-    {}, {}, {}, {}, {}, {}, {"Home"}, {"Left"}, {"Down"}, {"Right"}, {"Backspace"}, {},
-    {}, {}, {}, {}, {}, {}, {}, {"Ctrl+Backspace"}, {"Delete"}, {"Ctrl+Delete"}, {},
+    {}, {}, {}, {}, {}, {}, {}, {"Ctrl+Left"}, {"Up"}, {"Ctrl+Right"}, {"PageUp"}, {"Insert"},
+    {}, {}, {}, {}, {}, {}, {"Home"}, {"Left"}, {"Down"}, {"Right"}, {"End"}, {"CapsLock"},
+    {}, {}, {}, {}, {}, {}, {}, {"Ctrl+Backspace"}, {"Delete"}, {"Ctrl+Delete"}, {"PageDown"},
   }
 }
