@@ -436,6 +436,16 @@ return {
     ["Ctrl+Right"] = {{Key.RIGHT, Mod.CONTROL}},
     ["Ctrl+Backspace"] = {{Key.BACKSPACE, Mod.CONTROL}},
     ["Ctrl+Delete"] = {{Key.DELETE, Mod.CONTROL}},
+    ["Ctrl+Enter"] = {{Key.ENTER, Mod.CONTROL}},
+    ["Ctrl+d"] = {{Key.D, Mod.CONTROL}},
+    ["Shift+Tab"] = {{Key.TAB, Mod.SHIFT}},
+    ["Ctrl+p"] = {{Key.P, Mod.CONTROL}},
+    ["Ctrl+]"] = {{Key.BACKSLASH, Mod.CONTROL}},
+    ["Ctrl+/"] = {{Key.SLASH, Mod.CONTROL}},
+    ["Ctrl+z"] = {{Key.Z, Mod.CONTROL}},
+    ["Ctrl+x"] = {{Key.X, Mod.CONTROL}},
+    ["Ctrl+c"] = {{Key.C, Mod.CONTROL}},
+    ["Ctrl+v"] = {{Key.V, Mod.CONTROL}},
   }
 }
 

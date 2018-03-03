@@ -16,12 +16,8 @@ return layout.new {
     local right_thumb_key_list = keytable:map(options.right_thumb_key or "Convert")
     local right_thumb_key_role = options.right_thumb_key_role or KeyRole.TRIGGER
     local right_thumb_key_command = model:map_to_key(options.right_thumb_key_command or {"Convert"})
-    local left_left_thumb_key_list = keytable:map(options.left_thumb_key or "NonConvert")
-    local left_left_thumb_key_role = options.left_thumb_key_role or KeyRole.MODIFIER
-    local left_left_thumb_key_command = model:map_to_key(options.left_thumb_key_command or {{0}})
-    local right_right_thumb_key_list = keytable:map(options.right_right_thumb_key or "KatakanaHiragana")
-    local right_right_thumb_key_role = options.right_right_thumb_key_role or KeyRole.TRIGGER
-    local right_right_thumb_key_command = model:map_to_key(options.right_right_thumb_key_command or {"KatakanaHiragana"})
+    local left_edit_key_list = keytable:map(options.left_edit_key or "NonConvert")
+    local right_edit_key_list = keytable:map(options.right_edit_key or "KatakanaHiragana")
     local left_layout = options.left_layout or "A"
     local right_layout = options.right_layout or "A"
 
@@ -97,7 +93,8 @@ return layout.new {
     }
     local left_thumb_commands = model:map_to_keys(shr.LEFT_THUMB_COMMANDS)
     local right_thumb_commands = model:map_to_keys(shr.RIGHT_THUMB_COMMANDS)
-    local left_left_thumb_commands = model:map_to_keys(shr.LEFT_LEFT_THUMB_COMMANDS)
+    local left_edit_commands = model:map_to_keys(shr.LEFT_EDIT_COMMANDS)
+    local right_edit_commands = model:map_to_keys(shr.RIGHT_EDIT_COMMANDS)
     local cao_alphanumeric_commands = nil
     local cao_alphanumeric_shift_commands = nil
     if options.cao_type == "QWERTY" then
@@ -123,8 +120,8 @@ return layout.new {
       },
       immediate_key_flows {
         key_lists = {
-          left_left_thumb_key_list,
-          right_right_thumb_key_list,
+          left_edit_key_list,
+          right_edit_key_list,
         }
       },
       immediate_key_flows {
@@ -144,24 +141,30 @@ return layout.new {
       extended_mappings {
         trigger_key_lists = keytable.alphanumeric_key_lists,
         shift_key_list = {left_thumb_key_list, left_thumb_key_role},
+        modifier_key_lists = keytable.modifier_key_lists,
         commands = left_thumb_commands,
+        shift_key_command = left_thumb_key_command,
       },
       extended_mappings {
         trigger_key_lists = keytable.alphanumeric_key_lists,
         shift_key_list = {right_thumb_key_list, right_thumb_key_role},
+        modifier_key_lists = keytable.modifier_key_lists,
         commands = right_thumb_commands,
+        shift_key_command = right_thumb_key_command,
       },
       extended_mappings {
         trigger_key_lists = keytable.alphanumeric_key_lists,
-        shift_key_list = {left_left_thumb_key_list, left_left_thumb_key_role},
+        shift_key_list = {left_edit_key_list, KeyRole.MODIFIER},
         modifier_key_lists = keytable.modifier_key_lists,
-        commands = left_left_thumb_commands,
-        shift_key_command = left_left_thumb_key_command,
+        commands = left_edit_commands,
+        shift_key_command = {{0}},
       },
-      simple_mappings {
-        trigger_key_lists = {left_thumb_key_list, right_thumb_key_list, right_right_thumb_key_list},
+      extended_mappings {
+        trigger_key_lists = keytable.alphanumeric_key_lists,
+        shift_key_list = {right_edit_key_list, KeyRole.MODIFIER},
         modifier_key_lists = keytable.modifier_key_lists,
-        commands = {left_thumb_key_command, right_thumb_key_command, right_right_thumb_key_command},
+        commands = right_edit_commands,
+        shift_key_command = {{0}},
       },
       simple_mappings {
         trigger_key_lists = keytable.non_alphanumeric_key_lists,

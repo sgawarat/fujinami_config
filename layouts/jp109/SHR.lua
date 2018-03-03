@@ -1,3 +1,10 @@
+local edit_commands = {
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+    {}, {}, {}, {}, {}, {}, {"CapsLock"}, {"Home"}, {"Ctrl+Left"}, {"Ctrl+Right"}, {"End"}, {"PageUp"},
+    {"Ctrl+Backspace"}, {"Backspace"}, {"Delete"}, {"Ctrl+Delete"}, {"Ctrl+d"}, {}, {"Left"}, {"Down"}, {"Up"}, {"Right"}, {"Ctrl+Enter"}, {"PageDown"},
+    {"Ctrl+z"}, {"Ctrl+x"}, {"Ctrl+c"}, {"Ctrl+v"}, {}, {}, {}, {""}, {""}, {""}, {""},
+}
+
 return {
   -- QWERTY_COMMANDS = {
   --   {"1"}, {"2"}, {"3"}, {"4"}, {"5"}, {"\\|"}, {"6"}, {"7"}, {"8"}, {"9"}, {"0"}, {"-"}, {"^"},
@@ -53,10 +60,7 @@ return {
     {"=", "="}, {"*", "="}, {"{", "}"}, {"(", ")"}, {}, {}, {}, {")"}, {"}"}, {"&"}, {"="}, {"~"},
     {"!", "="}, {"-", "="}, {"+", "="}, {"[", "]"}, {}, {}, {"Space"}, {"]"}, {"|"}, {"-", ">"}, {"^"}
   },
-  LEFT_LEFT_THUMB_COMMANDS = {
-    {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-    {}, {}, {}, {}, {}, {}, {}, {"Ctrl+Left"}, {"Up"}, {"Ctrl+Right"}, {"PageUp"}, {"Insert"},
-    {}, {}, {}, {}, {}, {}, {"Home"}, {"Left"}, {"Down"}, {"Right"}, {"End"}, {"CapsLock"},
-    {}, {}, {}, {}, {}, {}, {}, {"Ctrl+Backspace"}, {"Delete"}, {"Ctrl+Delete"}, {"PageDown"},
-  }
+  LEFT_EDIT_COMMANDS = edit_commands,
+  RIGHT_EDIT_COMMANDS = edit_commands,
 }
+
