@@ -5,7 +5,75 @@ local edit_commands = {
     {"Ctrl+z"}, {"Ctrl+x"}, {"Ctrl+c"}, {"Ctrl+v"}, {}, {}, {}, {""}, {""}, {""}, {""},
 }
 
+local function build_layout(t)
+  return {
+    simul_key_flows {
+      key_lists = t.keytable.alphanumeric_key_lists,
+    },
+    simul_key_flows {
+      key_lists = {
+        t.left_thumb_key_list,
+        t.right_thumb_key_list,
+        t.left_edit_key_list,
+        t.right_edit_key_list,
+      }
+    },
+    immediate_key_flows {
+      key_lists = t.keytable.non_alphanumeric_key_lists,
+    },
+    immediate_key_flows {
+      key_lists = t.keytable.modifier_key_lists,
+    },
+    simple_mappings {
+      trigger_key_lists = t.keytable.alphanumeric_key_lists,
+      modifier_key_lists = t.keytable.modifier_key_lists,
+      commands = t.alphanumeric_commands,
+      shift_commands = t.alphanumeric_shift_commands,
+      cao_commands = t.cao_alphanumeric_commands,
+      cao_shift_commands = t.cao_alphanumeric_shift_commands,
+    },
+    extended_mappings {
+      trigger_key_lists = t.keytable.alphanumeric_key_lists,
+      shift_key_list = {t.left_thumb_key_list, t.left_thumb_key_role},
+      modifier_key_lists = t.keytable.modifier_key_lists,
+      commands = t.left_thumb_commands,
+      shift_key_command = t.left_thumb_key_command,
+    },
+    extended_mappings {
+      trigger_key_lists = t.keytable.alphanumeric_key_lists,
+      shift_key_list = {t.right_thumb_key_list, t.right_thumb_key_role},
+      modifier_key_lists = t.keytable.modifier_key_lists,
+      commands = t.right_thumb_commands,
+      shift_key_command = t.right_thumb_key_command,
+    },
+    extended_mappings {
+      trigger_key_lists = t.keytable.alphanumeric_key_lists,
+      shift_key_list = {t.left_edit_key_list, t.left_edit_key_role},
+      modifier_key_lists = t.keytable.modifier_key_lists,
+      commands = t.left_edit_commands,
+      shift_key_command = t.left_edit_key_command,
+    },
+    extended_mappings {
+      trigger_key_lists = t.keytable.alphanumeric_key_lists,
+      shift_key_list = {t.right_edit_key_list, t.right_edit_key_role},
+      modifier_key_lists = t.keytable.modifier_key_lists,
+      commands = t.right_edit_commands,
+      shift_key_command = t.right_edit_key_command,
+    },
+    simple_mappings {
+      trigger_key_lists = t.keytable.non_alphanumeric_key_lists,
+      modifier_key_lists = t.keytable.modifier_key_lists,
+      commands = t.model.non_alphanumeric_commands,
+    },
+    modifiers_mappings {
+      modifier_key_lists = t.keytable.modifier_key_lists,
+    },
+  }
+end
+
 return {
+  build_layout = build_layout,
+
   -- QWERTY_COMMANDS = {
   --   {"1"}, {"2"}, {"3"}, {"4"}, {"5"}, {"\\|"}, {"6"}, {"7"}, {"8"}, {"9"}, {"0"}, {"-"}, {"^"},
   --   {"q"}, {"w"}, {"e"}, {"r"}, {"t"}, {"["}, {"y"}, {"u"}, {"i"}, {"o"}, {"p"}, {"@"},
